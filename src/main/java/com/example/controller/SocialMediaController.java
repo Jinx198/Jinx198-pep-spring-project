@@ -20,9 +20,8 @@ import com.example.exception.*;
 @RequestMapping("/api")
 public class SocialMediaController {
 
-
 @Autowired
-private AccountService accountService;
+private Acc accountService;
 
 @Autowired
 private MessageService messageService;

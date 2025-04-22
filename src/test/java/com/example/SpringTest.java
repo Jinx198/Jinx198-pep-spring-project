@@ -5,7 +5,7 @@ import com.example.entity.Account;
 import com.example.entity.Message;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
-import com.example.service.AccountService;
+import com.example.service.Acc;
 import com.example.service.MessageService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -56,7 +56,7 @@ public class SpringTest {
      */
     @Test
     public void getAccountServiceBean(){
-        AccountService bean = applicationContext.getBean(AccountService.class);
+        Acc bean = applicationContext.getBean(Acc.class);
         Assertions.assertNotNull(bean);
     }
     /**
