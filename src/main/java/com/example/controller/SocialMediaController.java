@@ -16,11 +16,11 @@ import com.example.exception.*;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class SocialMediaController {
 
 @Autowired
-private AccountService accountService;
+private Acc accountService;
 
 @Autowired
 private MessageService messageService;
@@ -35,6 +35,12 @@ public ResponseEntity<?> register(@RequestBody Account account) {
     } catch(InvalidAccountException e){
         return ResponseEntity.badRequest().body("Invalid account details");
     }
+}
+
+// Exception handler for InvalidMessageException
+@ExceptionHandler(InvalidMessageException.class)
+public ResponseEntity<String> handleInvalidMessageException(InvalidMessageException e) {
+    return ResponseEntity.badRequest().body(e.getMessage());
 }
 
 //login request
@@ -55,7 +61,7 @@ public ResponseEntity<?> postMessage(@RequestBody Message message){
         Message saved = messageService.createMessage(message);
         return ResponseEntity.ok(saved);
     }catch(InvalidMessageException e) {
-        return ResponseEntity.badRequest().body("Invalid message");
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
 
@@ -69,7 +75,8 @@ public List<Message> getAllMessages(){
 @GetMapping("/messages/{id}")
 public ResponseEntity<?> getMessageById(@PathVariable int id){
     Message msg = messageService.getMessageById(id);
-    return msg != null ? ResponseEntity.ok(msg) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
+    return msg != null ? ResponseEntity.ok(msg) : ResponseEntity.ok().build();
+    //return msg != null ? ResponseEntity.ok(msg) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
 }
 
 
@@ -77,7 +84,8 @@ public ResponseEntity<?> getMessageById(@PathVariable int id){
 @DeleteMapping("/messages/{id}")
 public ResponseEntity<?> deleteMessage(@PathVariable int id) {
     int rowsDeleted = messageService.deleteMessage(id);
-    return rowsDeleted == 1 ? ResponseEntity.ok(1) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
+    return rowsDeleted == 1 ? ResponseEntity.ok(1) : ResponseEntity.ok().build();
+    //return rowsDeleted == 1 ? ResponseEntity.ok(1) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
 }
 
 //update message text

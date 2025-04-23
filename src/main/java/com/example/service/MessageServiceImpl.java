@@ -23,7 +23,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message createMessage(Message message) throws InvalidMessageException {
-        if (message.getMessageText() == null || message.getMessageText().isBlank() || message.getMessageText().length() > 255) {
+        if (message.getMessageText() == null || message.getMessageText().isBlank() || message.getMessageText().length() > 254) {
             throw new InvalidMessageException("Invalid message text.");
         }
         Account account = accountRepository.findById(message.getPostedBy()).orElse(null);
