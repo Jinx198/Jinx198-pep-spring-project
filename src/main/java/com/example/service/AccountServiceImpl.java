@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService{
         if(account.getPassword()==null || account.getPassword().length()<4){
             throw new InvalidAccountException("Password must be at least 4 characters long.");
         }
-        if(accountRepo.findByUsername(account.getUsername()).isPresent()){
+        if(accountRepository.findByUsername(account.getUsername()).isPresent()){
             throw new UsernameAlreadyExistsException("Username already exists.");
         }
         return accountRepository.save(account);
@@ -29,14 +29,8 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public Account login(String username, String password){
-        Account existing = accountRepository.findByUsername(username);
-        return (existing != null && existing.getPassword().equals(password))? existing : null;
+        return accountRepository.findByUsername(username).filter(acc-> acc.getPassword().equals(password)).orElse(null);
+        
     }
-
-
-
-
-
-
 
 }

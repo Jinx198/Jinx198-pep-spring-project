@@ -16,12 +16,11 @@ import com.example.exception.*;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 @RestController
-//@RequestMapping
 @RequestMapping("/api")
 public class SocialMediaController {
 
 @Autowired
-private Acc accountService;
+private AccountService accountService;
 
 @Autowired
 private MessageService messageService;
@@ -70,7 +69,7 @@ public List<Message> getAllMessages(){
 @GetMapping("/messages/{id}")
 public ResponseEntity<?> getMessageById(@PathVariable int id){
     Message msg = messageService.getMessageById(id);
-    return msg != null ? ResponseEntity.ok(msg) : ResponseEntity.ok().build();
+    return msg != null ? ResponseEntity.ok(msg) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
 }
 
 
@@ -78,7 +77,7 @@ public ResponseEntity<?> getMessageById(@PathVariable int id){
 @DeleteMapping("/messages/{id}")
 public ResponseEntity<?> deleteMessage(@PathVariable int id) {
     int rowsDeleted = messageService.deleteMessage(id);
-    return rowsDeleted == 1 ? ResponseEntity.ok(1) : ResponseEntity.ok().build();
+    return rowsDeleted == 1 ? ResponseEntity.ok(1) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
 }
 
 //update message text
@@ -98,6 +97,5 @@ public ResponseEntity<?> updateMessage(@PathVariable int id, @RequestBody Map<St
 public List<Message> getMessageByUser(@PathVariable int id){
     return messageService.getMessagesByAccountId(id);
 }
-
 
 }
