@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AccountServiceImpl implements AccountService{
+    
     @Autowired
     private AccountRepository accountRepository;
 
@@ -29,8 +30,9 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public Account login(String username, String password){
-        return accountRepository.findByUsername(username).filter(acc-> acc.getPassword().equals(password)).orElse(null);
-        
+        return accountRepository.findByUsername(username)
+        .filter(acc-> acc.getPassword()
+        .equals(password)).orElse(null); 
     }
 
 }

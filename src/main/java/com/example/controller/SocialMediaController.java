@@ -25,6 +25,7 @@ private AccountService accountService;
 @Autowired
 private MessageService messageService;
 
+//registers a new account
 @PostMapping("/register")
 public ResponseEntity<?> register(@RequestBody Account account) {
     try{
@@ -43,7 +44,7 @@ public ResponseEntity<String> handleInvalidMessageException(InvalidMessageExcept
     return ResponseEntity.badRequest().body(e.getMessage());
 }
 
-//login request
+//login request with given credentials
 @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody Account account){
     Account loggedIn = accountService.login(account.getUsername(), account.getPassword());
@@ -54,7 +55,7 @@ public ResponseEntity<?> login(@RequestBody Account account){
     }
 }
 
-//message request
+//posts a new message
 @PostMapping("/messages")
 public ResponseEntity<?> postMessage(@RequestBody Message message){
     try{
@@ -71,24 +72,22 @@ public List<Message> getAllMessages(){
     return messageService.getAllMessages();
 }
 
-//get message by id
+//get message by id, returns 200 ok if there is no empty body
 @GetMapping("/messages/{id}")
 public ResponseEntity<?> getMessageById(@PathVariable int id){
     Message msg = messageService.getMessageById(id);
     return msg != null ? ResponseEntity.ok(msg) : ResponseEntity.ok().build();
-    //return msg != null ? ResponseEntity.ok(msg) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
 }
 
 
-//delete message by id
+//delete message by id, always returns 200 ok even if the message does not exist
 @DeleteMapping("/messages/{id}")
 public ResponseEntity<?> deleteMessage(@PathVariable int id) {
     int rowsDeleted = messageService.deleteMessage(id);
     return rowsDeleted == 1 ? ResponseEntity.ok(1) : ResponseEntity.ok().build();
-    //return rowsDeleted == 1 ? ResponseEntity.ok(1) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
 }
 
-//update message text
+//update message text by it's id
 @PatchMapping("/messages/{id}")
 public ResponseEntity<?> updateMessage(@PathVariable int id, @RequestBody Map<String, String> body){
     String newText = body.get("messageText");
@@ -100,7 +99,7 @@ public ResponseEntity<?> updateMessage(@PathVariable int id, @RequestBody Map<St
     }
 }
 
-//get all messages from a user
+//get all messages from a specific account id
 @GetMapping("/accounts/{id}/messages")
 public List<Message> getMessageByUser(@PathVariable int id){
     return messageService.getMessagesByAccountId(id);
