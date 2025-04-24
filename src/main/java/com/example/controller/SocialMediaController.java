@@ -20,7 +20,7 @@ import com.example.exception.*;
 public class SocialMediaController {
 
 @Autowired
-private Acc accountService;
+private AccountService accountService;
 
 @Autowired
 private MessageService messageService;
