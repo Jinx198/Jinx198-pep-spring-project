@@ -1,6 +1,6 @@
 package com.example.exception;
 
-//exception for when the username already exists
+//exception for when the username already exists.
 public class UsernameAlreadyExistsException extends Exception{
     public UsernameAlreadyExistsException()
     {

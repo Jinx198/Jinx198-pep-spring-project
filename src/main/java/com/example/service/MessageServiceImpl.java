@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-
+//service implementation for handling message operations.
 @Service
 public class MessageServiceImpl implements MessageService {
 
@@ -21,6 +21,7 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private AccountRepository accountRepository;
 
+    //creates a new message after validating the text and user.
     @Override
     public Message createMessage(Message message) throws InvalidMessageException {
         if (message.getMessageText() == null || message.getMessageText().isBlank() || message.getMessageText().length() > 254) {
@@ -34,16 +35,19 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.save(message);
     }
 
+    //retrieves all messages from the repository. 
     @Override
     public List<Message> getAllMessages() {
         return messageRepository.findAll();
     }
 
+    //find a message by id. 
     @Override
     public Message getMessageById(int id) {
         return messageRepository.findById(id).orElse(null);
     }
 
+    //deletes a message by id. 
     @Override
     public int deleteMessage(int id) {
         if (messageRepository.existsById(id)) {
@@ -53,6 +57,7 @@ public class MessageServiceImpl implements MessageService {
         return 0;
     }
 
+    //updates the text of an existing message. 
     @Override
     public int updateMessage(int id, String newText) throws InvalidMessageException {
         if (newText == null || newText.isBlank() || newText.length() > 255) {
@@ -69,6 +74,7 @@ public class MessageServiceImpl implements MessageService {
         return 1;
     }
 
+    //retrives all messages posted by a specific account. 
     @Override
     public List<Message> getMessagesByAccountId(int accountId) {
         return messageRepository.findByPostedBy(accountId);

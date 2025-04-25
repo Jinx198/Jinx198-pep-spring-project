@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+//service implementation for account related operations 
 @Service
 public class AccountServiceImpl implements AccountService{
     
     @Autowired
     private AccountRepository accountRepository;
 
+    //register a new account after validating input.
     @Override
     public Account register(Account account) throws UsernameAlreadyExistsException, InvalidAccountException {
         if(account.getUsername()== null|| account.getUsername().isBlank()){
@@ -28,6 +30,7 @@ public class AccountServiceImpl implements AccountService{
         return accountRepository.save(account);
     }
 
+    //authenticates a user based on username and password.
     @Override
     public Account login(String username, String password){
         return accountRepository.findByUsername(username)
